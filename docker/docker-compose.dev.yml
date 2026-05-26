@@ -1,0 +1,14 @@
+services:
+  db:
+    image: postgres:16
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_DB: cerro_dev
+      POSTGRES_USER: cerro
+      POSTGRES_PASSWORD: devpass
+    volumes:
+      - db_dev_data:/var/lib/postgresql/data
+
+volumes:
+  db_dev_data:

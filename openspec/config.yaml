@@ -1,0 +1,35 @@
+# SDD configuration — Restaurante-Cerro
+# Persistence mode: openspec (no Engram)
+
+version: "1.0"
+project: restaurante-cerro
+mode: openspec
+
+strict_tdd: true
+
+testing:
+  capabilities:
+    unit:
+      runner: vitest
+      libraries:
+        - "@testing-library/react"
+        - "@testing-library/user-event"
+      coverage: v8
+      enabled: true
+    e2e:
+      runner: playwright
+      browsers:
+        - chromium
+        - webkit       # primary customer device is mobile Safari
+      enabled: true
+    lint:
+      eslint: true
+      prettier: true
+    types:
+      checker: typescript
+      strict: true
+
+openspec:
+  specs_dir: openspec/specs
+  changes_dir: openspec/changes
+  project_context: openspec/project.md

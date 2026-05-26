@@ -1,0 +1,279 @@
+@import "tailwindcss";
+
+@custom-variant dark (&:is(.dark *));
+
+/* ─── Theme bridge to Tailwind v4 ────────────────────────────────────────
+   These map our brand tokens (declared below in :root) to the names that
+   shadcn/ui components already consume (--color-*, --radius-*, etc).
+   Edit tokens in :root; everything else flows. */
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+
+  /* Brand scale */
+  --color-brand-50:  var(--brand-50);
+  --color-brand-100: var(--brand-100);
+  --color-brand-200: var(--brand-200);
+  --color-brand-300: var(--brand-300);
+  --color-brand-400: var(--brand-400);
+  --color-brand-500: var(--brand-500);
+  --color-brand-600: var(--brand-600);
+  --color-brand-700: var(--brand-700);
+  --color-brand-800: var(--brand-800);
+  --color-brand-900: var(--brand-900);
+
+  /* Neutral (warm earth) */
+  --color-neutral-0:   var(--neutral-0);
+  --color-neutral-50:  var(--neutral-50);
+  --color-neutral-100: var(--neutral-100);
+  --color-neutral-200: var(--neutral-200);
+  --color-neutral-300: var(--neutral-300);
+  --color-neutral-400: var(--neutral-400);
+  --color-neutral-500: var(--neutral-500);
+  --color-neutral-600: var(--neutral-600);
+  --color-neutral-700: var(--neutral-700);
+  --color-neutral-800: var(--neutral-800);
+  --color-neutral-900: var(--neutral-900);
+
+  /* Semantic */
+  --color-success-50:  var(--success-50);
+  --color-success-400: var(--success-400);
+  --color-success-500: var(--success-500);
+  --color-success-600: var(--success-600);
+  --color-success-700: var(--success-700);
+  --color-warning-50:  var(--warning-50);
+  --color-warning-400: var(--warning-400);
+  --color-warning-500: var(--warning-500);
+  --color-warning-600: var(--warning-600);
+  --color-warning-700: var(--warning-700);
+  --color-danger-50:   var(--danger-50);
+  --color-danger-400:  var(--danger-400);
+  --color-danger-500:  var(--danger-500);
+  --color-danger-600:  var(--danger-600);
+  --color-danger-700:  var(--danger-700);
+  --color-info-50:     var(--info-50);
+  --color-info-500:    var(--info-500);
+  --color-info-700:    var(--info-700);
+  --color-indigo-50:   var(--indigo-50);
+  --color-indigo-500:  var(--indigo-500);
+  --color-indigo-700:  var(--indigo-700);
+  --color-yape:        var(--yape);
+
+  /* Radius scale */
+  --radius-sm: calc(var(--radius) - 6px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+  --radius-2xl: calc(var(--radius) + 12px);
+
+  /* Fonts (injected as CSS vars by next/font in layout.tsx) */
+  --font-sans: var(--font-inter);
+  --font-display: var(--font-display);
+  --font-mono: var(--font-mono);
+}
+
+/* ─── Brand and semantic tokens (Restaurante Cerro DESIGN.md §2) ───────── */
+:root {
+  --radius: 0.75rem;
+
+  /* Brand — ají amarillo tostado */
+  --brand-50:  #FFF8EC;
+  --brand-100: #FFEDC9;
+  --brand-200: #FFD992;
+  --brand-300: #FFC256;
+  --brand-400: #F5A623;
+  --brand-500: #D97706;
+  --brand-600: #B45309;
+  --brand-700: #92400E;
+  --brand-800: #78350F;
+  --brand-900: #451A03;
+
+  /* Neutrals — tierra cálida, NO grises fríos */
+  --neutral-0:   #FFFFFF;
+  --neutral-50:  #FAF9F7;
+  --neutral-100: #F5F3EF;
+  --neutral-200: #E7E3DC;
+  --neutral-300: #D4CFC4;
+  --neutral-400: #A19A8B;
+  --neutral-500: #6B6557;
+  --neutral-600: #4A4639;
+  --neutral-700: #332F25;
+  --neutral-800: #1E1B14;
+  --neutral-900: #0E0C08;
+
+  /* Semantic */
+  --success-50:  #F0FDF4;
+  --success-400: #4ADE80;
+  --success-500: #16A34A;
+  --success-600: #15803D;
+  --success-700: #166534;
+  --warning-50:  #FFFBEB;
+  --warning-400: #FBBF24;
+  --warning-500: #F59E0B;
+  --warning-600: #D97706;
+  --warning-700: #B45309;
+  --danger-50:   #FEF2F2;
+  --danger-400:  #F87171;
+  --danger-500:  #DC2626;
+  --danger-600:  #B91C1C;
+  --danger-700:  #991B1B;
+  --info-50:     #F0F9FF;
+  --info-500:    #0EA5E9;
+  --info-700:    #0369A1;
+
+  /* Indigo for grouped tables */
+  --indigo-50:   #EEF2FF;
+  --indigo-500:  #6366F1;
+  --indigo-700:  #3730A3;
+
+  /* Yape brand */
+  --yape: #742581;
+
+  /* Short code typography sizes (tweakable per role) */
+  --shortcode-cliente: 72px;
+  --shortcode-cocina: 128px;
+
+  /* shadcn aliases mapped to brand tokens */
+  --background: var(--neutral-50);
+  --foreground: var(--neutral-800);
+  --card: var(--neutral-0);
+  --card-foreground: var(--neutral-800);
+  --popover: var(--neutral-0);
+  --popover-foreground: var(--neutral-800);
+  --primary: var(--brand-500);
+  --primary-foreground: var(--neutral-0);
+  --secondary: var(--neutral-100);
+  --secondary-foreground: var(--neutral-800);
+  --muted: var(--neutral-100);
+  --muted-foreground: var(--neutral-500);
+  --accent: var(--brand-50);
+  --accent-foreground: var(--brand-700);
+  --destructive: var(--danger-500);
+  --destructive-foreground: var(--neutral-0);
+  --border: var(--neutral-200);
+  --input: var(--neutral-200);
+  --ring: var(--brand-500);
+}
+
+/* ─── Dark mode (used by /cocina TV) ──────────────────────────────────── */
+.dark {
+  --background: var(--neutral-900);
+  --foreground: #FFFAF0;
+  --card: #1C1A14;
+  --card-foreground: #FFFAF0;
+  --popover: #1C1A14;
+  --popover-foreground: #FFFAF0;
+  --primary: var(--brand-300);
+  --primary-foreground: var(--neutral-900);
+  --secondary: #2A2620;
+  --secondary-foreground: #FFFAF0;
+  --muted: #2A2620;
+  --muted-foreground: var(--neutral-400);
+  --accent: var(--brand-700);
+  --accent-foreground: var(--brand-100);
+  --destructive: var(--danger-400);
+  --destructive-foreground: var(--neutral-900);
+  --border: #3A3528;
+  --input: #3A3528;
+  --ring: var(--brand-300);
+}
+
+/* ─── Base ────────────────────────────────────────────────────────────── */
+html, body, #__next {
+  height: 100%;
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: var(--font-sans), system-ui, -apple-system, sans-serif;
+  font-feature-settings: 'cv05', 'cv11';
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+* { box-sizing: border-box; }
+
+/* Tabular numbers helper — apply to any element with currency or codes */
+.tabnum { font-variant-numeric: tabular-nums; }
+
+/* Hide tap highlight on iOS */
+a, button { -webkit-tap-highlight-color: transparent; }
+
+/* Scrollbar tame */
+::-webkit-scrollbar { width: 10px; height: 10px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb {
+  background: color-mix(in srgb, var(--neutral-800) 18%, transparent);
+  border-radius: 8px;
+  border: 2px solid transparent;
+  background-clip: content-box;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: color-mix(in srgb, var(--neutral-800) 30%, transparent);
+  border: 2px solid transparent;
+  background-clip: content-box;
+}
+
+/* Focus ring for accessibility (overrides shadcn default to use brand) */
+button:focus-visible,
+input:focus-visible,
+select:focus-visible,
+textarea:focus-visible,
+[role="button"]:focus-visible {
+  outline: 3px solid color-mix(in srgb, var(--brand-500) 30%, transparent);
+  outline-offset: 2px;
+}
+
+/* ─── Animations (DESIGN.md §9 motion tokens) ─────────────────────────── */
+@keyframes pulseSoft {
+  0%, 100% { transform: scale(1); opacity: 1; }
+  50% { transform: scale(1.04); opacity: 0.85; }
+}
+.pulse-soft { animation: pulseSoft 1.6s ease-in-out infinite; }
+
+@keyframes flashIn {
+  0% { transform: scale(0.95); opacity: 0; box-shadow: 0 0 0 3px var(--brand-300); }
+  60% { box-shadow: 0 0 0 6px color-mix(in srgb, var(--brand-300) 40%, transparent); }
+  100% { transform: scale(1); opacity: 1; box-shadow: 0 0 0 0 transparent; }
+}
+.flash-in { animation: flashIn 0.6s cubic-bezier(0.4, 0, 0.2, 1); }
+
+@keyframes slideUp {
+  from { transform: translateY(20px); opacity: 0; }
+  to { transform: translateY(0); opacity: 1; }
+}
+.slide-up { animation: slideUp 0.25s cubic-bezier(0.4, 0, 0.2, 1); }
+
+@keyframes connDot {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.4; }
+}
+.conn-dot { animation: connDot 2s ease-in-out infinite; }
+
+/* Respect reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  .pulse-soft, .flash-in, .slide-up, .conn-dot {
+    animation: none !important;
+  }
+  * {
+    transition-duration: 0.001ms !important;
+  }
+}
