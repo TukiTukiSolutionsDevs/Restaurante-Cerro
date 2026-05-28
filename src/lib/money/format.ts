@@ -18,3 +18,10 @@ export function formatSoles(cents: number): string {
   // Node.js ICU data version. Normalize all variants to the local convention: no space.
   return raw.replace(/^(?:S\/|PEN)[\s\u00a0]*/u, 'S/');
 }
+
+// Display formatter for customer-facing UI: drops trailing ".00" when whole soles.
+// Use formatSoles() for receipts, audit logs, and anywhere we want strict 2-decimal format.
+export function formatSolesCompact(cents: number): string {
+  const full = formatSoles(cents);
+  return cents % 100 === 0 ? full.replace(/\.00$/, '') : full;
+}

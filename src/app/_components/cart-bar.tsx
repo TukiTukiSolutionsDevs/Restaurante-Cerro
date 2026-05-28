@@ -1,6 +1,6 @@
 'use client';
 
-import { formatSoles } from '@/lib/money/format';
+import { formatSolesCompact } from '@/lib/money/format';
 
 interface CartBarProps {
   count: number;
@@ -13,7 +13,7 @@ export function CartBar({ count, totalCents, onClick }: CartBarProps) {
     <button
       type="button"
       onClick={onClick}
-      aria-label={`Ver pedido: ${count} ${count === 1 ? 'plato' : 'platos'}, total ${formatSoles(totalCents)}`}
+      aria-label={`Ver pedido: ${count} ${count === 1 ? 'plato' : 'platos'}, total ${formatSolesCompact(totalCents)}`}
       style={{
         position: 'fixed',
         left: '50%',
@@ -60,7 +60,7 @@ export function CartBar({ count, totalCents, onClick }: CartBarProps) {
         className="tabnum"
         style={{ fontFamily: 'var(--font-mono)', fontSize: 18, fontWeight: 700 }}
       >
-        {formatSoles(totalCents)}
+        {formatSolesCompact(totalCents)}
       </div>
       <div style={{ fontSize: 16, opacity: 0.7 }}>→</div>
     </button>

@@ -1,4 +1,4 @@
-export { formatSoles } from './format';
+export { formatSoles, formatSolesCompact } from './format';
 export { priceOrder } from './price';
 export type {
   CartItem,

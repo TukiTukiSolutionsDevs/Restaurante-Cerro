@@ -4,7 +4,7 @@ import QRCode from 'qrcode';
 
 import { CerroLogo } from '@/app/_components/cerro-logo';
 import { db } from '@/db/client';
-import { formatSoles } from '@/lib/money/format';
+import { formatSolesCompact } from '@/lib/money/format';
 import { OrderService } from '@/server/services/order';
 
 import { LiveStatus } from './_components/live-status';
@@ -212,22 +212,13 @@ export default async function OrderTicketPage({ params }: PageProps) {
             <div
               key={idx}
               style={{
-                display: 'flex',
-                justifyContent: 'space-between',
                 padding: '4px 0',
                 fontSize: 13,
                 color: 'var(--neutral-700)',
               }}
             >
-              <span>
-                {item.quantity}× {item.name}
-                {item.withTupper ? ' · con tupper' : ''}
-              </span>
-              {item.unitPriceCents > 0 && (
-                <span className="tabnum">
-                  {formatSoles(item.unitPriceCents * item.quantity)}
-                </span>
-              )}
+              {item.quantity}× {item.name}
+              {item.withTupper ? ' · con tupper' : ''}
             </div>
           ))}
 
@@ -246,7 +237,7 @@ export default async function OrderTicketPage({ params }: PageProps) {
                 color: 'var(--neutral-800)',
               }}
             >
-              {formatSoles(order.totalCents)}
+              {formatSolesCompact(order.totalCents)}
             </span>
           </div>
         </div>

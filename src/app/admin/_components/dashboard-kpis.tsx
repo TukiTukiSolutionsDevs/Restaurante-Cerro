@@ -1,8 +1,7 @@
+import { formatSoles } from '@/lib/money/format';
 import type { DailyReport } from '@/server/services/report';
 
-function formatCents(cents: number): string {
-  return `S/ ${(cents / 100).toFixed(2)}`;
-}
+const formatCents = formatSoles;
 
 function formatMs(ms: number | null): string {
   if (ms === null) return '—';

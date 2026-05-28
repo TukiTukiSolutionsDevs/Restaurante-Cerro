@@ -137,5 +137,5 @@ export async function releaseTableAction(tableId: number): Promise<ActionResult>
 export async function logoutAction(): Promise<never> {
   const cookies = await nextCookies();
   await destroyStaffSession(cookies);
-  redirect('/login?role=waiter');
+  redirect('/login');
 }

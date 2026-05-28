@@ -1,7 +1,7 @@
 import { Moon } from 'lucide-react';
 
 import { db } from '@/db/client';
-import { formatSoles } from '@/lib/money/format';
+import { formatSolesCompact } from '@/lib/money/format';
 import type { ItemCategory } from '@/lib/money/types';
 import { MenuService } from '@/server/services/menu';
 
@@ -23,12 +23,13 @@ const CATEGORY_LABELS: Record<ItemCategory, string> = {
 const CATEGORY_ORDER: ItemCategory[] = ['starter', 'main', 'drink', 'dessert'];
 
 function fmtDateLong(): string {
-  const raw = new Date().toLocaleDateString('es-PE', {
-    weekday: 'long',
-    day: 'numeric',
-    month: 'long',
-  });
-  return raw.charAt(0).toUpperCase() + raw.slice(1);
+  const d = new Date();
+  const weekday = d.toLocaleDateString('es-PE', { weekday: 'long' });
+  const day = d.getDate();
+  // Node ICU sentence-cases month when queried alone; force lowercase to match es-PE convention.
+  const month = d.toLocaleDateString('es-PE', { month: 'long' }).toLowerCase();
+  const cap = (s: string) => s.charAt(0).toUpperCase() + s.slice(1);
+  return `${cap(weekday)} ${day} de ${month}`;
 }
 
 export default async function CustomerPage() {
@@ -157,9 +158,9 @@ export default async function CustomerPage() {
           </p>
           <p style={{ margin: '12px 0 0', fontSize: 12, color: 'var(--brand-700)', fontWeight: 500 }}>
             Menú completo{' '}
-            <b className="tabnum">{formatSoles(menu.comboConfig.dineInPriceCents)}</b> aquí
+            <b className="tabnum">{formatSolesCompact(menu.comboConfig.dineInPriceCents)}</b> aquí
             {' · '}
-            <b className="tabnum">{formatSoles(menu.comboConfig.takeawayPriceCents)}</b> para llevar
+            <b className="tabnum">{formatSolesCompact(menu.comboConfig.takeawayPriceCents)}</b> para llevar
           </p>
         </div>
 

@@ -2,7 +2,7 @@
 
 import { Minus, Plus } from 'lucide-react';
 
-import { formatSoles } from '@/lib/money/format';
+import { formatSolesCompact } from '@/lib/money/format';
 import type { ItemCategory } from '@/lib/money/types';
 
 import { useCartStore } from './cart-store';
@@ -33,7 +33,7 @@ export function MenuItemCard({
 
   const isExtra = category === 'drink' || category === 'dessert';
   const priceLabel =
-    isExtra && priceCents !== null ? formatSoles(priceCents) : 'incluido en el menú';
+    isExtra && priceCents !== null ? formatSolesCompact(priceCents) : 'incluido en el menú';
 
   return (
     <div

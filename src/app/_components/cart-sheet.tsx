@@ -5,7 +5,7 @@ import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 
 import { Sheet, SheetContent, SheetTitle } from '@/components/ui/sheet';
-import { formatSoles } from '@/lib/money/format';
+import { formatSolesCompact } from '@/lib/money/format';
 import { priceOrder } from '@/lib/money/price';
 import type { ComboConfig } from '@/lib/money/types';
 
@@ -119,7 +119,7 @@ export function CartSheet({ comboConfig }: CartSheetProps) {
         <SheetContent
           side="bottom"
           className="flex flex-col gap-0 rounded-t-2xl p-0"
-          style={{ maxHeight: '90dvh' }}
+          style={{ maxHeight: '90dvh', maxWidth: 448, margin: '0 auto', inset: 'auto 0 0 0' }}
         >
           <SheetTitle className="sr-only">Tu pedido</SheetTitle>
 
@@ -282,7 +282,7 @@ export function CartSheet({ comboConfig }: CartSheetProps) {
                   .reduce((a, l) => a + l.quantity, 0);
 
                 const isTakeaway = orderType === 'takeaway';
-                const tupperSoles = formatSoles(comboConfig.tupperPartialPriceCents);
+                const tupperSoles = formatSolesCompact(comboConfig.tupperPartialPriceCents);
                 const partialPriceCents =
                   item.category === 'starter'
                     ? comboConfig.partialStarterPriceCents
@@ -294,7 +294,7 @@ export function CartSheet({ comboConfig }: CartSheetProps) {
                 if (item.category === 'drink' || item.category === 'dessert') {
                   breakdown =
                     item.priceCents != null
-                      ? `${formatSoles(item.priceCents)} c/u`
+                      ? `${formatSolesCompact(item.priceCents)} c/u`
                       : '';
                 } else if (comboQty > 0 && partialQty === 0) {
                   breakdown = isTakeaway
@@ -302,13 +302,13 @@ export function CartSheet({ comboConfig }: CartSheetProps) {
                     : 'Incluido en el menú';
                 } else if (comboQty === 0 && partialQty > 0 && partialPriceCents != null) {
                   breakdown = isTakeaway
-                    ? `${formatSoles(partialPriceCents)} + ${tupperSoles} tupper c/u`
-                    : `${formatSoles(partialPriceCents)} c/u`;
+                    ? `${formatSolesCompact(partialPriceCents)} + ${tupperSoles} tupper c/u`
+                    : `${formatSolesCompact(partialPriceCents)} c/u`;
                 } else if (comboQty > 0 && partialQty > 0 && partialPriceCents != null) {
                   const partialUnit = isTakeaway
                     ? partialPriceCents + comboConfig.tupperPartialPriceCents
                     : partialPriceCents;
-                  breakdown = `${comboQty} en menú · ${partialQty} suelto a ${formatSoles(partialUnit)}`;
+                  breakdown = `${comboQty} en menú · ${partialQty} suelto a ${formatSolesCompact(partialUnit)}`;
                 }
 
                 return (
@@ -349,7 +349,7 @@ export function CartSheet({ comboConfig }: CartSheetProps) {
                         }}
                         className="tabnum"
                       >
-                        {formatSoles(itemTotalCents)}
+                        {formatSolesCompact(itemTotalCents)}
                       </div>
                     )}
                     {!item.isAvailable && (
@@ -409,7 +409,7 @@ export function CartSheet({ comboConfig }: CartSheetProps) {
                 <UtensilsCrossed size={18} />
                 <span>Comer aquí</span>
                 <small style={{ fontSize: 11, opacity: 0.7 }}>
-                  {formatSoles(comboConfig.dineInPriceCents)} c/menú
+                  {formatSolesCompact(comboConfig.dineInPriceCents)} c/menú
                 </small>
               </button>
               <button
@@ -420,7 +420,7 @@ export function CartSheet({ comboConfig }: CartSheetProps) {
                 <ShoppingBag size={18} />
                 <span>Para llevar</span>
                 <small style={{ fontSize: 11, opacity: 0.7 }}>
-                  {formatSoles(comboConfig.takeawayPriceCents)} c/menú
+                  {formatSolesCompact(comboConfig.takeawayPriceCents)} c/menú
                 </small>
               </button>
             </div>
@@ -486,13 +486,13 @@ export function CartSheet({ comboConfig }: CartSheetProps) {
                 {pricing.subtotalCents > 0 && (
                   <div style={{ display: 'flex', justifyContent: 'space-between', padding: '3px 0' }}>
                     <span>Subtotal</span>
-                    <span className="tabnum">{formatSoles(pricing.subtotalCents)}</span>
+                    <span className="tabnum">{formatSolesCompact(pricing.subtotalCents)}</span>
                   </div>
                 )}
                 {pricing.tupperCents > 0 && (
                   <div style={{ display: 'flex', justifyContent: 'space-between', padding: '3px 0' }}>
                     <span>Tupper</span>
-                    <span className="tabnum">+{formatSoles(pricing.tupperCents)}</span>
+                    <span className="tabnum">+{formatSolesCompact(pricing.tupperCents)}</span>
                   </div>
                 )}
                 <div style={{ height: 1, background: 'var(--neutral-200)', margin: '10px 0' }} />
@@ -509,7 +509,7 @@ export function CartSheet({ comboConfig }: CartSheetProps) {
                       color: 'var(--neutral-800)',
                     }}
                   >
-                    {formatSoles(pricing.totalCents)}
+                    {formatSolesCompact(pricing.totalCents)}
                   </span>
                 </div>
               </div>

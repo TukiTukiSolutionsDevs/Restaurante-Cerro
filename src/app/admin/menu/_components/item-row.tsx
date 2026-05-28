@@ -34,7 +34,7 @@ interface ItemRowProps {
 }
 
 function formatPrice(cents: number): string {
-  return `S/ ${(cents / 100).toFixed(2)}`;
+  return `S/${(cents / 100).toFixed(2)}`;
 }
 
 function getDisplayPrice(
@@ -176,7 +176,7 @@ export function ItemRow({
               comboPartialMainCents,
             );
             return (
-              <span className="flex flex-col leading-tight">
+              <span className="flex flex-col whitespace-nowrap leading-tight">
                 <span>{value}</span>
                 {isCombo && (
                   <span className="text-[10px] uppercase tracking-wide text-muted-foreground">

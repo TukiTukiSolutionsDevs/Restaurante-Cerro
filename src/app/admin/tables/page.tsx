@@ -13,7 +13,7 @@ export default async function AdminTablesPage() {
   const tables = await service.listAllWithDerivedState();
 
   return (
-    <main className="mx-auto max-w-7xl px-6 py-8">
+    <div className="px-4 py-5">
       <div className="mb-6 flex items-center justify-between">
         <h1 className="font-display text-2xl font-bold text-neutral-800">
           Mesas del restaurante
@@ -27,6 +27,6 @@ export default async function AdminTablesPage() {
         initialTables={tables}
         actorId={session.staffUserId}
       />
-    </main>
+    </div>
   );
 }

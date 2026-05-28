@@ -57,7 +57,7 @@ export default async function AdminMenuPage() {
 
   if (!todayMenu) {
     return (
-      <main className="mx-auto max-w-4xl px-6 py-8">
+      <div className="px-4 py-5">
         <div className="mb-6 flex items-center justify-between">
           <h1 className="font-display text-2xl font-bold text-neutral-800">Menú de hoy</h1>
           <span className="rounded-full bg-neutral-100 px-3 py-1 text-xs font-semibold uppercase tracking-widest text-neutral-500">
@@ -94,7 +94,7 @@ export default async function AdminMenuPage() {
             </form>
           </div>
         </div>
-      </main>
+      </div>
     );
   }
 
@@ -130,7 +130,7 @@ export default async function AdminMenuPage() {
   );
 
   return (
-    <main className="mx-auto max-w-4xl px-6 py-8">
+    <div className="px-4 py-5">
       <LiveRefresh />
 
       <div className="mb-6 flex items-center justify-between">
@@ -195,6 +195,7 @@ export default async function AdminMenuPage() {
                     Sin platos en esta categoría.
                   </p>
                 ) : (
+                  <div className="-mx-4 overflow-x-auto px-4">
                   <Table>
                     <TableHeader>
                       <TableRow>
@@ -225,12 +226,13 @@ export default async function AdminMenuPage() {
                       ))}
                     </TableBody>
                   </Table>
+                  </div>
                 )}
               </TabsContent>
             ))}
           </Tabs>
         </div>
       </div>
-    </main>
+    </div>
   );
 }

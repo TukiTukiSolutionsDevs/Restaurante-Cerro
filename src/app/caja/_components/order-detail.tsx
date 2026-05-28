@@ -44,23 +44,27 @@ export function OrderDetail({ order, onCancel, isCancelling }: Props) {
         </div>
       )}
 
-      {/* Header: shortCode + mesa/llevar chip + time */}
-      <div className="flex items-center justify-between">
+      {/* Header: MESA grande primero + código pequeño + hora */}
+      <div className="flex items-center justify-between gap-3">
         <div className="flex items-center gap-3">
-          <span className="tabnum font-mono text-2xl font-bold tracking-widest text-neutral-800">
-            {order.shortCode}
-          </span>
           {isTakeaway ? (
-            <span className="flex items-center gap-1.5 rounded-lg bg-danger-50 px-3 py-1 text-xs font-bold uppercase tracking-wide text-danger-700">
-              <ShoppingBag className="h-3.5 w-3.5" />
+            <span className="flex items-center gap-2 rounded-xl bg-danger-50 px-3 py-2 text-base font-extrabold uppercase tracking-wide text-danger-700">
+              <ShoppingBag className="h-5 w-5" />
               Para llevar
             </span>
           ) : (
-            <span className="flex items-center gap-1.5 rounded-lg bg-brand-50 px-3 py-1 text-xs font-bold uppercase tracking-wide text-brand-700">
-              <UtensilsCrossed className="h-3.5 w-3.5" />
-              Mesa {order.tableCode ?? '—'}
-            </span>
+            <div className="flex flex-col leading-none">
+              <span className="text-[10px] font-bold uppercase tracking-widest text-neutral-400">
+                Mesa
+              </span>
+              <span className="tabnum mt-0.5 font-mono text-3xl font-extrabold tracking-wider text-brand-700">
+                {order.tableCode ?? '—'}
+              </span>
+            </div>
           )}
+          <span className="tabnum font-mono text-xs font-semibold uppercase tracking-wider text-neutral-400">
+            #{order.shortCode}
+          </span>
         </div>
         <span className="text-xs text-neutral-400">
           {new Date(order.createdAt).toLocaleTimeString('es-PE', {

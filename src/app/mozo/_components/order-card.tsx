@@ -57,23 +57,30 @@ export function OrderCard({ order, isOffline, onDeliver }: OrderCardProps) {
       aria-label={`Pedido ${order.shortCode}`}
       className={`flex flex-col gap-3 rounded-2xl border border-neutral-200 bg-white p-5 shadow-sm ${isLate ? 'pulse-soft' : ''}`}
     >
-      {/* Top row: shortCode + mesa/llevar + status */}
+      {/* Top row: MESA grande (lo que el mozo busca) + estado + código pequeño */}
       <div className="flex items-start gap-3">
-        <span className="tabnum font-mono text-5xl font-bold leading-none tracking-wider text-neutral-800">
-          {order.shortCode}
-        </span>
-        <div className="flex flex-1 flex-col items-end gap-1.5">
-          {order.tableCode ? (
-            <span className="rounded-lg bg-brand-100 px-3 py-1 font-mono text-base font-extrabold text-brand-800">
+        {order.tableCode ? (
+          <div className="flex flex-col leading-none">
+            <span className="text-[10px] font-bold uppercase tracking-widest text-neutral-400">
+              Mesa
+            </span>
+            <span className="tabnum mt-0.5 font-mono text-5xl font-extrabold tracking-wider text-brand-700">
               {order.tableCode}
             </span>
-          ) : (
-            <span className="flex items-center gap-1 rounded-full bg-danger-50 px-2.5 py-1 text-xs font-bold uppercase tracking-wide text-danger-700">
-              <ShoppingBag className="h-3 w-3" />
+          </div>
+        ) : (
+          <div className="flex flex-col leading-none">
+            <span className="text-[10px] font-bold uppercase tracking-widest text-neutral-400">
+              Pedido
+            </span>
+            <span className="mt-0.5 flex items-center gap-1.5 text-2xl font-extrabold text-danger-700">
+              <ShoppingBag className="h-5 w-5" />
               Para llevar
             </span>
-          )}
+          </div>
+        )}
 
+        <div className="flex flex-1 flex-col items-end gap-1.5">
           {isPaidNotKitchen ? (
             <span className="rounded-full bg-info-50 px-2.5 py-0.5 text-xs font-bold uppercase tracking-wide text-info-700">
               Esperando cocina
@@ -88,6 +95,9 @@ export function OrderCard({ order, isOffline, onDeliver }: OrderCardProps) {
               En cocina
             </span>
           )}
+          <span className="tabnum font-mono text-xs font-semibold tracking-wider text-neutral-400">
+            #{order.shortCode}
+          </span>
         </div>
       </div>
 

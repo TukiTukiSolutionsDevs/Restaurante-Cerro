@@ -35,7 +35,7 @@ export function LookupForm({ inputRef, isLoading, onLookup }: Props) {
   return (
     <div className="space-y-2">
       <label className="text-xs font-semibold uppercase tracking-widest text-neutral-500">
-        Código del pedido o escanea QR
+        Escanea QR, mesa o código
       </label>
       <div className="flex gap-2.5">
         <input
@@ -45,7 +45,7 @@ export function LookupForm({ inputRef, isLoading, onLookup }: Props) {
           value={code}
           onChange={(e) => setCode(e.target.value.toUpperCase())}
           onKeyDown={handleKey}
-          placeholder="ABCD"
+          placeholder="M07 o ABCD"
           maxLength={200}
           disabled={isLoading}
           className="h-14 flex-1 rounded-xl border border-neutral-200 bg-white px-5 font-mono text-3xl font-bold uppercase tracking-widest text-neutral-800 placeholder:text-neutral-300 placeholder:font-sans placeholder:text-lg placeholder:normal-case placeholder:tracking-normal focus:border-brand-500 focus:outline-none focus:ring-2 focus:ring-brand-100 disabled:opacity-50"

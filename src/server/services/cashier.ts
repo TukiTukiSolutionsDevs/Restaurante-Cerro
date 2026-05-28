@@ -143,6 +143,24 @@ export class CashierService {
         LIMIT  1
       `);
       row = res.rows[0];
+    } else if (/^M\d+$/i.test(code.trim())) {
+      // Mesa-code path — last 24 h, active statuses, most recent for that table
+      const mesaCode = code.trim().toUpperCase();
+      const res = await this.db.execute<OrderRow>(sql`
+        SELECT o.id, o.short_code, o.status, o.order_type, o.table_group_id,
+               o.total_cents, o.created_at, o.paid_at, o.paid_by_cashier_id,
+               o.payment_method, o.payment_reference, o.qr_expires_at, o.qr_consumed_at,
+               o.delivered_at, o.cancelled_at, o.cancel_reason
+        FROM   "order" o
+        JOIN   "table_group_member" tgm ON tgm.table_group_id = o.table_group_id
+        JOIN   "restaurant_table" rt ON rt.id = tgm.table_id
+        WHERE  rt.code = ${mesaCode}
+          AND  o.created_at > now() - interval '24 hours'
+          AND  o.status IN ('pending', 'paid', 'in_kitchen')
+        ORDER  BY o.created_at DESC
+        LIMIT  1
+      `);
+      row = res.rows[0];
     } else {
       // Short-code path — last 24 h, active statuses only, most recent first
       const res = await this.db.execute<OrderRow>(sql`

@@ -42,7 +42,7 @@ export default async function AuditPage({ searchParams }: Props) {
   const totalPages = Math.max(1, Math.ceil(total / PAGE_SIZE));
 
   return (
-    <main className="mx-auto max-w-6xl px-6 py-8">
+    <div className="px-4 py-5">
       <h1 className="mb-6 font-display text-2xl font-bold text-neutral-800">Auditoría</h1>
 
       {/* Filters card */}
@@ -81,6 +81,6 @@ export default async function AuditPage({ searchParams }: Props) {
           )}
         </div>
       </div>
-    </main>
+    </div>
   );
 }

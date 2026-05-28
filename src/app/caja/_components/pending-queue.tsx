@@ -52,26 +52,33 @@ export function PendingQueue({ orders, currentOrderId, onSelect }: Props) {
                   onClick={() => onSelect(order)}
                   className={[
                     'w-full rounded-lg border-l-[3px] px-3 py-2.5 text-left transition-colors',
-                    'flex items-center gap-2.5 shadow-sm',
+                    'flex items-center gap-3 shadow-sm',
                     isLoaded
                       ? 'border-brand-500 bg-brand-50'
                       : 'border-transparent bg-white hover:bg-brand-50 hover:border-brand-500',
                   ].join(' ')}
                 >
-                  <span className="tabnum font-mono text-sm font-bold tracking-wider text-neutral-800">
-                    {order.shortCode}
+                  {/* Mesa / Llevar — identidad principal */}
+                  {order.orderType === 'takeaway' ? (
+                    <span className="flex min-w-[58px] items-center gap-1 rounded-md bg-neutral-100 px-2 py-1 text-xs font-bold uppercase text-neutral-700">
+                      <ShoppingBag className="h-3 w-3" /> Llevar
+                    </span>
+                  ) : (
+                    <span className="tabnum min-w-[58px] rounded-md bg-brand-100 px-2 py-1 text-center font-mono text-base font-extrabold tracking-wider text-brand-800">
+                      {order.tableCode ?? '—'}
+                    </span>
+                  )}
+
+                  {/* Code + qty */}
+                  <span className="flex flex-1 flex-col">
+                    <span className="text-xs text-neutral-500">
+                      {order.items.reduce((a, b) => a + b.quantity, 0)} platos
+                    </span>
+                    <span className="tabnum font-mono text-[11px] uppercase tracking-wider text-neutral-400">
+                      #{order.shortCode}
+                    </span>
                   </span>
-                  <span className="flex flex-1 items-center gap-1.5 text-xs text-neutral-500">
-                    {order.orderType === 'takeaway' ? (
-                      <>
-                        <ShoppingBag className="h-3 w-3" /> Llevar
-                      </>
-                    ) : (
-                      order.tableCode ?? '—'
-                    )}
-                    {' · '}
-                    {order.items.reduce((a, b) => a + b.quantity, 0)} platos
-                  </span>
+
                   <span className="tabnum font-mono text-sm font-bold text-neutral-800">
                     {formatSoles(order.totalCents)}
                   </span>

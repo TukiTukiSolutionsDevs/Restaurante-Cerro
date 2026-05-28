@@ -8,12 +8,18 @@ import { WaiterShell } from './_components/waiter-shell';
 export const dynamic = 'force-dynamic';
 
 export default async function MozoPage() {
-  await requireRoleOrRedirect(['waiter', 'admin']);
+  const session = await requireRoleOrRedirect(['waiter', 'admin']);
 
   const [initialOrders, initialTables] = await Promise.all([
     new WaiterService(db).listActive(),
     new TableService(db).listAllWithDerivedState(),
   ]);
 
-  return <WaiterShell initialOrders={initialOrders} initialTables={initialTables} />;
+  return (
+    <WaiterShell
+      initialOrders={initialOrders}
+      initialTables={initialTables}
+      staffName={session.displayName}
+    />
+  );
 }

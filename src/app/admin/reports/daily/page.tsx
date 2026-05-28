@@ -22,14 +22,14 @@ export default async function DailyReportPage({ searchParams }: Props) {
 
   if (!isValidDate || isFuture) {
     return (
-      <main className="mx-auto max-w-4xl px-6 py-8">
+      <div className="px-4 py-5">
         <h1 className="mb-4 font-display text-2xl font-bold text-neutral-800">
           Reportes diarios
         </h1>
         <p className="rounded-xl border border-danger-200 bg-danger-50 px-4 py-3 text-sm text-danger-700">
           {!isValidDate ? 'Fecha inválida.' : 'No se pueden consultar fechas futuras.'}
         </p>
-      </main>
+      </div>
     );
   }
 
@@ -37,7 +37,7 @@ export default async function DailyReportPage({ searchParams }: Props) {
   const report = await svc.daily(new Date(dateStr + 'T00:00:00.000Z'));
 
   return (
-    <main className="mx-auto max-w-4xl px-6 py-8">
+    <div className="px-4 py-5">
       <div className="mb-6 flex items-center justify-between">
         <h1 className="font-display text-2xl font-bold text-neutral-800">
           Reportes — {dateStr}
@@ -73,6 +73,6 @@ export default async function DailyReportPage({ searchParams }: Props) {
       </form>
 
       <ReportView report={report} />
-    </main>
+    </div>
   );
 }

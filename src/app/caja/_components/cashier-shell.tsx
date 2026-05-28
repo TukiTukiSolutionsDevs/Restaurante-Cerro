@@ -1,6 +1,6 @@
 'use client';
 
-import { Receipt } from 'lucide-react';
+import { LogOut, Receipt } from 'lucide-react';
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { toast } from 'sonner';
 
@@ -12,6 +12,7 @@ import {
   lookupAction,
   undoAction,
 } from '@/server/actions/cashier';
+import { logoutAction } from '@/server/actions/waiter';
 import type { CashierOrderView } from '@/server/services/cashier';
 
 import { ConfirmForm } from './confirm-form';
@@ -168,26 +169,41 @@ export function CashierShell({ initialPending, initialConfirmed, initialSummary,
     .join('');
 
   return (
-    <div className="grid min-h-screen grid-cols-1 bg-neutral-100 lg:grid-cols-[3fr_2fr]">
-      {/* IZQUIERDA — 60% */}
-      <div className="flex flex-col gap-5 overflow-y-auto border-r border-neutral-200 bg-white p-6 lg:p-7">
-        {/* Header */}
-        <div className="flex items-center justify-between border-b border-neutral-200 pb-4">
-          <div>
-            <div className="text-[11px] font-semibold uppercase tracking-widest text-neutral-500">
-              Caja
-            </div>
-            <h1 className="font-display text-2xl font-extrabold text-neutral-800">
-              Cobrar pedido
-            </h1>
+    <div className="mx-auto flex min-h-dvh max-w-md flex-col bg-neutral-50">
+      {/* Mobile header */}
+      <header className="sticky top-0 z-30 flex items-center justify-between gap-2 border-b border-neutral-200 bg-white px-4 py-3">
+        <div className="min-w-0">
+          <div className="text-[11px] font-semibold uppercase tracking-widest text-neutral-500">
+            Caja
           </div>
-          <div className="flex items-center gap-2.5 text-sm text-neutral-600">
-            <div className="flex h-8 w-8 items-center justify-center rounded-full bg-brand-500 text-xs font-bold text-white">
-              {initials}
-            </div>
-            {displayName}
-          </div>
+          <h1 className="font-display truncate text-lg font-extrabold text-neutral-800">
+            Cobrar pedido
+          </h1>
         </div>
+        <div className="flex items-center gap-2 text-xs text-neutral-600">
+          <div className="flex h-8 w-8 items-center justify-center rounded-full bg-brand-500 text-xs font-bold text-white">
+            {initials}
+          </div>
+          <span className="hidden sm:inline">{displayName}</span>
+          <form action={logoutAction}>
+            <button
+              type="submit"
+              aria-label="Cerrar sesión"
+              className="flex h-9 w-9 items-center justify-center rounded-full text-neutral-500 hover:bg-neutral-100 hover:text-neutral-700"
+            >
+              <LogOut size={18} />
+            </button>
+          </form>
+        </div>
+      </header>
+
+      {/* Main column */}
+      <main className="flex flex-1 flex-col gap-4 p-4">
+        <SummaryWidget
+          summary={summary}
+          soundEnabled={soundEnabled}
+          onToggleSound={toggleSound}
+        />
 
         {/* Lookup */}
         <LookupForm
@@ -215,33 +231,16 @@ export function CashierShell({ initialPending, initialConfirmed, initialSummary,
             />
           </div>
         ) : (
-          <div className="flex min-h-[260px] flex-1 flex-col items-center justify-center gap-3 rounded-xl border border-dashed border-neutral-200 bg-white p-6 text-center">
-            <Receipt className="h-11 w-11 text-neutral-300" />
+          <div className="flex min-h-[180px] flex-col items-center justify-center gap-2 rounded-xl border border-dashed border-neutral-200 bg-white p-5 text-center">
+            <Receipt className="h-10 w-10 text-neutral-300" />
             <p className="text-sm font-semibold text-neutral-500">
-              Escanea el QR o pide el código
+              Escanea el QR, pide la mesa o el código
             </p>
             <p className="max-w-xs text-xs text-neutral-400">
-              El cliente lo lleva en su celular. Si no lo trae, dile el código de 4 letras.
+              También podés tocar la mesa en la lista de pendientes ↓
             </p>
           </div>
         )}
-
-        {/* Hotkeys footer */}
-        <div className="mt-auto flex gap-4 border-t border-neutral-200 pt-3 text-[11px] text-neutral-400">
-          <HotkeyHint k="Enter" label="buscar/confirmar" />
-          <HotkeyHint k="1" label="efectivo" />
-          <HotkeyHint k="2" label="Yape" />
-          <HotkeyHint k="Esc" label="limpiar" />
-        </div>
-      </div>
-
-      {/* DERECHA — 40% */}
-      <div className="flex flex-col gap-4 overflow-y-auto bg-neutral-50 p-6">
-        <SummaryWidget
-          summary={summary}
-          soundEnabled={soundEnabled}
-          onToggleSound={toggleSound}
-        />
 
         <PendingQueue
           orders={pending}
@@ -255,7 +254,15 @@ export function CashierShell({ initialPending, initialConfirmed, initialSummary,
         />
 
         <RecentConfirmed orders={confirmed} onUndo={handleUndo} />
-      </div>
+
+        {/* Hotkeys footer — only on devices that have a keyboard (sm+) */}
+        <div className="mt-auto hidden gap-4 border-t border-neutral-200 pt-3 text-[11px] text-neutral-400 sm:flex">
+          <HotkeyHint k="Enter" label="buscar/confirmar" />
+          <HotkeyHint k="1" label="efectivo" />
+          <HotkeyHint k="2" label="Yape" />
+          <HotkeyHint k="Esc" label="limpiar" />
+        </div>
+      </main>
     </div>
   );
 }

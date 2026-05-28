@@ -1,6 +1,6 @@
 'use client';
 
-import { HandPlatter } from 'lucide-react';
+import { HandPlatter, LogOut } from 'lucide-react';
 import { useCallback, useState } from 'react';
 
 import { useSse } from '@/lib/realtime/use-sse';
@@ -15,6 +15,7 @@ import { Tabs } from './tabs';
 interface WaiterShellProps {
   initialOrders: WaiterOrderView[];
   initialTables: TableWithState[];
+  staffName: string;
 }
 
 interface WaiterFloorSnapshot {
@@ -30,7 +31,14 @@ interface Toast {
 
 let nextToastId = 0;
 
-export function WaiterShell({ initialOrders, initialTables }: WaiterShellProps) {
+function initials(name: string): string {
+  const parts = name.trim().split(/\s+/);
+  if (parts.length === 0 || !parts[0]) return '··';
+  if (parts.length === 1) return parts[0].slice(0, 2).toUpperCase();
+  return (parts[0][0]! + parts[parts.length - 1]![0]!).toUpperCase();
+}
+
+export function WaiterShell({ initialOrders, initialTables, staffName }: WaiterShellProps) {
   const [activeTab, setActiveTab] = useState<'orders' | 'tables'>('orders');
   const [orders, setOrders] = useState<WaiterOrderView[]>(initialOrders);
   const [tables, setTables] = useState<TableWithState[]>(initialTables);
@@ -80,7 +88,7 @@ export function WaiterShell({ initialOrders, initialTables }: WaiterShellProps) 
   const visibleOrders = orders.filter((o) => !hiddenOrderIds.has(o.orderId));
 
   return (
-    <div className="flex h-dvh flex-col bg-neutral-50">
+    <div className="mx-auto flex h-dvh max-w-md flex-col bg-neutral-50">
       {isOffline && (
         <div
           role="alert"
@@ -90,12 +98,54 @@ export function WaiterShell({ initialOrders, initialTables }: WaiterShellProps) 
         </div>
       )}
 
-      <Tabs activeTab={activeTab} onTabChange={setActiveTab} />
+      {/* Mobile header: avatar + role + name + logout */}
+      <header className="flex items-center justify-between gap-2 border-b border-neutral-200 bg-white px-4 py-3">
+        <div className="flex items-center gap-3 min-w-0">
+          <div
+            aria-hidden="true"
+            className="flex h-9 w-9 flex-shrink-0 items-center justify-center rounded-full bg-brand-500 text-sm font-bold text-white"
+          >
+            {initials(staffName)}
+          </div>
+          <div className="min-w-0">
+            <div className="text-[11px] font-semibold uppercase tracking-wider text-neutral-500">
+              Mozo
+            </div>
+            <div className="truncate text-sm font-bold text-neutral-800">{staffName}</div>
+          </div>
+        </div>
+        <div className="flex items-center gap-2">
+          <span
+            className={[
+              'flex items-center gap-1.5 rounded-full px-2 py-1 text-[11px] font-bold',
+              isOffline
+                ? 'bg-warning-50 text-warning-700'
+                : 'bg-success-50 text-success-700',
+            ].join(' ')}
+          >
+            <span
+              className="conn-dot inline-block h-1.5 w-1.5 rounded-full"
+              style={{ background: isOffline ? 'var(--warning-500)' : 'var(--success-500)' }}
+            />
+            {isOffline ? 'Sin conexión' : 'En línea'}
+          </span>
+          <form action={logoutAction}>
+            <button
+              type="submit"
+              aria-label="Cerrar sesión"
+              className="flex h-9 w-9 items-center justify-center rounded-full text-neutral-500 hover:bg-neutral-100 hover:text-neutral-700"
+            >
+              <LogOut size={18} />
+            </button>
+          </form>
+        </div>
+      </header>
 
-      <div
+      {/* Main panel */}
+      <main
         id={`panel-${activeTab}`}
         role="tabpanel"
-        className="flex-1 overflow-auto p-4 md:p-5"
+        className="flex-1 overflow-auto p-4"
       >
         {activeTab === 'orders' ? (
           visibleOrders.length === 0 ? (
@@ -107,7 +157,7 @@ export function WaiterShell({ initialOrders, initialTables }: WaiterShellProps) 
               <p className="text-sm">Tómate un respiro.</p>
             </div>
           ) : (
-            <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
+            <div className="flex flex-col gap-4">
               {visibleOrders.map((o) => (
                 <OrderCard
                   key={o.orderId}
@@ -121,10 +171,10 @@ export function WaiterShell({ initialOrders, initialTables }: WaiterShellProps) 
         ) : (
           <FloorTab tables={tables} orders={orders} isOffline={isOffline} />
         )}
-      </div>
+      </main>
 
       {/* Toast stack */}
-      <div className="fixed bottom-20 left-1/2 z-50 -translate-x-1/2 space-y-2 text-center">
+      <div className="fixed bottom-24 left-1/2 z-50 -translate-x-1/2 space-y-2 text-center">
         {toasts.map((t) => (
           <div
             key={t.id}
@@ -138,14 +188,12 @@ export function WaiterShell({ initialOrders, initialTables }: WaiterShellProps) 
         ))}
       </div>
 
-      <form action={logoutAction} className="fixed bottom-3 right-3 z-40">
-        <button
-          type="submit"
-          className="min-h-[48px] rounded-xl px-4 py-2 text-sm font-medium text-neutral-400 hover:bg-neutral-100 hover:text-neutral-600"
-        >
-          Cerrar sesión
-        </button>
-      </form>
+      {/* Bottom nav */}
+      <Tabs
+        activeTab={activeTab}
+        onTabChange={setActiveTab}
+        activeOrdersCount={visibleOrders.length}
+      />
     </div>
   );
 }

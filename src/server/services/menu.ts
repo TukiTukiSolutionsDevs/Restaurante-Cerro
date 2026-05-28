@@ -564,7 +564,7 @@ export class MenuService {
     const items = await this.db
       .select()
       .from(menuItem)
-      .where(and(eq(menuItem.dailyMenuId, menu.id), eq(menuItem.isAvailable, true)))
+      .where(eq(menuItem.dailyMenuId, menu.id))
       .orderBy(menuItem.category, menuItem.sortOrder);
 
     return {

@@ -402,7 +402,7 @@ describe('MenuService', () => {
     expect(result).toBeNull();
   });
 
-  it('FR-6: getTodayPublicMenu returns menu with available items only', async () => {
+  it('FR-6: getTodayPublicMenu returns menu with all items (including sold-out, marked via isAvailable)', async () => {
     const db = makeMockDb({
       dbSelects: [[openedMenuRow], [comboRow], [itemRow]],
     });

@@ -35,21 +35,21 @@ export default async function AdminDashboardPage() {
   const activeTablesCount = Number(activeTablesRow?.total ?? 0);
 
   return (
-    <main className="mx-auto max-w-6xl px-6 py-8">
-      <h1 className="mb-6 font-display text-2xl font-bold text-neutral-800">Panel</h1>
+    <div className="px-4 py-5">
+      <h1 className="mb-4 font-display text-xl font-bold text-neutral-800">Panel</h1>
 
       <DashboardKpis report={report} activeTablesCount={activeTablesCount} />
 
-      <div className="mt-8 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
+      <div className="mt-6 flex flex-col gap-3">
         {navCards.map((item) => {
           const Icon = item.icon;
           return (
             <Link key={item.href} href={item.href}>
-              <div className="group flex items-start gap-4 rounded-xl border border-neutral-200 bg-white p-5 transition-shadow hover:shadow-md">
+              <div className="group flex items-center gap-4 rounded-xl border border-neutral-200 bg-white p-4 transition-shadow hover:shadow-md">
                 <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-brand-50 text-brand-600 group-hover:bg-brand-100">
                   <Icon className="h-5 w-5" />
                 </div>
-                <div>
+                <div className="min-w-0 flex-1">
                   <p className="font-display font-bold text-neutral-800">{item.label}</p>
                   <p className="mt-0.5 text-sm text-neutral-500">{item.desc}</p>
                 </div>
@@ -58,6 +58,6 @@ export default async function AdminDashboardPage() {
           );
         })}
       </div>
-    </main>
+    </div>
   );
 }

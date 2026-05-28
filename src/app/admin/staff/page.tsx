@@ -11,7 +11,7 @@ export default async function StaffPage() {
   const staff = await svc.list();
 
   return (
-    <main className="mx-auto max-w-5xl px-6 py-8">
+    <div className="px-4 py-5">
       <div className="mb-6 flex items-center justify-between">
         <h1 className="font-display text-2xl font-bold text-neutral-800">Personal</h1>
         <StaffCreateDialog />
@@ -19,6 +19,6 @@ export default async function StaffPage() {
       <div className="rounded-xl border border-neutral-200 bg-white">
         <StaffTable staff={staff} currentUserId={session.staffUserId} />
       </div>
-    </main>
+    </div>
   );
 }

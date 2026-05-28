@@ -10,7 +10,7 @@ import {
 import type { DailyReport } from '@/server/services/report';
 
 function fmt(cents: number) {
-  return `S/ ${(cents / 100).toFixed(2)}`;
+  return `S/${(cents / 100).toFixed(2)}`;
 }
 
 function fmtMs(ms: number | null) {
